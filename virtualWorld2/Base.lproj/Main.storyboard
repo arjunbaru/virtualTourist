@@ -93,7 +93,7 @@
                                 </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="wxJ-Qi-6ak">
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="1" green="0.78729843990000004" blue="0.50493982479999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Tcr-5Z-gy9">
                                     <size key="itemSize" width="85" height="82"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -109,6 +109,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qvm-hB-jzF"/>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="LT9-Xd-fJx"/>
                                             </subviews>
                                         </view>
                                         <constraints>
@@ -116,8 +117,11 @@
                                             <constraint firstItem="Qvm-hB-jzF" firstAttribute="leading" secondItem="FcE-fK-BON" secondAttribute="leading" id="AyQ-yZ-TLG"/>
                                             <constraint firstItem="Qvm-hB-jzF" firstAttribute="centerY" secondItem="FcE-fK-BON" secondAttribute="centerY" id="REN-CH-RWi"/>
                                             <constraint firstItem="Qvm-hB-jzF" firstAttribute="top" secondItem="FcE-fK-BON" secondAttribute="topMargin" constant="-9" id="Y8e-ze-JhW"/>
+                                            <constraint firstItem="LT9-Xd-fJx" firstAttribute="centerX" secondItem="Qvm-hB-jzF" secondAttribute="centerX" id="pvB-W9-FNs"/>
+                                            <constraint firstItem="LT9-Xd-fJx" firstAttribute="centerY" secondItem="Qvm-hB-jzF" secondAttribute="centerY" id="vFC-Ki-VR0"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="activityIndicator" destination="LT9-Xd-fJx" id="q2C-ip-Dvk"/>
                                             <outlet property="imageView" destination="Qvm-hB-jzF" id="zVW-Vn-HK4"/>
                                         </connections>
                                     </collectionViewCell>

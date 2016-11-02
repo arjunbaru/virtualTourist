@@ -21,5 +21,6 @@ extension Photos {
     @NSManaged public var url: String?
     @NSManaged public var filePath: String?
     @NSManaged public var pin: Pin?
+    @NSManaged public var image: NSData?
 
 }

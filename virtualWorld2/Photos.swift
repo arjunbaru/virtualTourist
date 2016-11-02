@@ -13,17 +13,14 @@ import UIKit
 
 public class Photos: NSManagedObject {
     
-    
-    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertInto: context)
-    }
-     init(photoUrl:String,id: String,filePath: String, pin: Pin,context: NSManagedObjectContext){
+   
+  convenience  init(photoUrl:String,id: String, pin: Pin,context: NSManagedObjectContext){
         let ent = NSEntityDescription.entity(forEntityName: "Photos", in: context)
-        super.init(entity: ent!, insertInto: context)
+        self.init(entity: ent!, insertInto: context)
         self.url = photoUrl
         self.pin = pin
         self.id = id
-        self.filePath = filePath
+        self.image = nil
     }
     
 }

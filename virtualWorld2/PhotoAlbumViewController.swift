@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class PhotoAlbumViewController: UIViewController, MKMapViewDelegate,NSFetchedResultsControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource{
+class PhotoAlbumViewController: UIViewController, MKMapViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource{
     let image:UIImageView? = nil
     @IBOutlet weak var mapView: MKMapView!
     
@@ -32,7 +32,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate,NSFetchedRes
        // print("Pin IS \(pin?.lat)")
         loadData()
         
-        fetchedResultController.delegate = self
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         
@@ -112,8 +112,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate,NSFetchedRes
        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoAlbumViewController", for: indexPath) as! PhotoCollectionViewCell
        cell.imageView.alpha = 1.0
             let photo = fetchedResultController.object(at: indexPath)
-            print("pho== \(photo.filePath)")
-        let hppp = UIImage(contentsOfFile: loadImage(photo.filePath))
+            print("pho== \(photo.image)")
+        
+        let hppp = UIImage(data: photo.image as! Data)
         
     totalLoadedPhotos.append(indexPath)
         print("imageee :\(hppp)")
@@ -145,26 +146,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate,NSFetchedRes
         
         return UIImage(contentsOfFile: fileURL!.path)!
     }
-    func loadImage(_ filePath: String?)-> String {
-        if let filePath = filePath {
-            
-            // Check to see if there's an error downloading the images for each Pin
-            if filePath == "error" {
-                return "404.jpg"
-            }
-            
-            // Get the file path
-            let fileName = (filePath as NSString).lastPathComponent
-            let dirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-            let pathArray = [dirPath, fileName]
-            let fileURL = NSURL.fileURL(withPathComponents: pathArray)
-            return fileURL!.path
-        }
-     return ""
-    }
-
+    
 }
-
 //MARK: mapView
 
 extension PhotoAlbumViewController{
@@ -207,6 +190,7 @@ extension PhotoAlbumViewController{
     
     func photoReload(_ notification: Notification) {
         DispatchQueue.main.async(execute: {
+            self.reFetch()
             self.collectionView.reloadData()
             
             // If no photos remaining, show the 'New Collection' button

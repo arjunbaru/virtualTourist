@@ -53,19 +53,22 @@ extension FlickrClient{
                         return
                     }
                   // let path = self.filePath(imageURl: photoUrl)
-                    
-                    
-                   self.downloadPhotoFromUrl(photoString: photoUrl){(result,success,error) in
-                    let newPhoto = Photos.init(photoUrl: photoUrl, id: photoId, filePath: result!, pin: pin, context: coreDatabase.persistentContainer.viewContext)
+                    let imageUrl = NSURL(string: photoUrl)
+                    let newPhoto = Photos(photoUrl: photoUrl, id: photoId, pin: pin, context: coreDatabase.persistentContainer.viewContext)
                     pin.addToPhotos(newPhoto)
-                    print("NEW PHOTOOOO\(newPhoto.filePath)")
-                    
+                    DispatchQueue.main.async(execute: { 
+                        coreDatabase.saveContext()
+                    })
+                    self.downloadPhotoFromUrl(imageUrl: imageUrl as! URL){(result,success,error) in
+                        
+                    newPhoto.image = result!
                     self.numberOfPhotos-=1
                     
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "downloadPhotoImage.done"), object: nil)
                     
                     DispatchQueue.main.async(execute: {
                         if result != nil{
+                            
                         coreDatabase.saveContext()
                         }
                     })
@@ -83,31 +86,11 @@ extension FlickrClient{
     }
     
     
-    func downloadPhotoFromUrl(photoString: String,completionHandler: @escaping(_ result: String?,_ success: Bool,_ error: NSError?)-> Void){
-        let imageUrl = photoString
-       // print("photo URl \(photo.url)")
-        self.getPhoto(imageUrl){(data,error) in
-            if error != nil{
-                print("error while downloading image")
-              //  photo.filePath = "error"
-                completionHandler(nil,false,error)
-                
-            }else{
-                let fileName = (imageUrl as NSString).lastPathComponent
-                let dirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-                let pathArray = [dirPath, fileName]
-                let fileURL = NSURL.fileURL(withPathComponents: pathArray)!
-                print("Data : \(data)")
-                FileManager.default.createFile(atPath: fileURL.path, contents: data, attributes: nil)
-               // photo.filePath = fileURL.path
-               // print("........\(photo.filePath)")
-                print("DownloadSaved")
-                completionHandler(fileURL.path,true,nil)
-            
-            }
-        }
+    func downloadPhotoFromUrl(imageUrl: URL,completionHandler: @escaping(_ result: NSData?,_ success: Bool,_ error: NSError?)-> Void){
         
-    }
+       // print("photo URl \(photo.url)")
+        let imageData = NSData(contentsOf: imageUrl)
+        completionHandler(imageData,true,nil)
     
-    
+}
 }
